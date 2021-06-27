@@ -1,8 +1,18 @@
 import axios from 'axios'
+import AuthService from './service/authService'
 
 export const httpClient = axios.create({
     baseURL: 'http://localhost:8080/'
 })
+
+httpClient.interceptors.request.use(async config => {
+    const token = AuthService.getToken();
+    if (token) {
+        config.headers.Authorization = `Bearer ${token}`;
+    }
+    return config;
+});
+
 
 class ApiService {
 
@@ -10,14 +20,14 @@ class ApiService {
         this.apiurl = apiurl;
     }
 
-    post(url, objeto){
+    post(url, object){
         const requestUrl = `${this.apiurl}${url}`
-        return httpClient.post(requestUrl, objeto);
+        return httpClient.post(requestUrl, object);
     }
 
-    put(url, objeto){
+    put(url, object){
         const requestUrl = `${this.apiurl}${url}`
-        return httpClient.put(requestUrl, objeto);
+        return httpClient.put(requestUrl, object);
     }
 
     delete(url){

@@ -16,7 +16,7 @@ class Home extends React.Component{
 
     componentDidMount(){
         const usuarioLogado = this.context.usuarioAutenticado
-
+        
         this.usuarioService
             .obterSaldoPorUsuario(usuarioLogado.id)
             .then( response => {

@@ -1,15 +1,11 @@
 import ApiService from '../apiservice'
 
-import ErroValidacao from '../exception/ErroValidacao'
+import ErrorValidation from '../exception/ErrorValidation'
 
 class UsuarioService extends ApiService {
 
     constructor(){
         super('/api/usuarios')
-    }
-
-    autenticar(credenciais){
-        return this.post('/autenticar', credenciais)
     }
 
     obterSaldoPorUsuario(id){
@@ -40,7 +36,7 @@ class UsuarioService extends ApiService {
         }        
 
         if(erros && erros.length > 0){
-            throw new ErroValidacao(erros);
+            throw new ErrorValidation(erros);
         }
     }
 

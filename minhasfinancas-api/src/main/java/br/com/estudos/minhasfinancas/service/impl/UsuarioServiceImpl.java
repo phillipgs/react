@@ -57,4 +57,14 @@ public class UsuarioServiceImpl implements UsuarioService {
 		return repository.findById(id);
 	}
 
+	@Override
+	public Usuario obterPorNome(String nome) {
+		Optional<Usuario> usuario = repository.findByNome(nome);
+		
+		if(!usuario.isPresent()) {
+			throw new ErroAutenticacao("Usuário não encontrado.");
+		}
+		return usuario.get();
+	}
+
 }

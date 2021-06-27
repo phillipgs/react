@@ -3,30 +3,33 @@ import Card from '../components/card'
 import FormGroup from '../components/form-group'
 import { withRouter } from 'react-router-dom'
 
-import UsuarioService from '../app/service/usuarioService'
+import JwtService from '../app/service/jwtService'
 import LocalStorageService from '../app/service/localstorageService'
 import { mensagemErro } from '../components/toastr'
 import { AuthContext  } from '../main/provedorAutenticacao'
+import jwt_decode from "jwt-decode";
 
 class Login extends React.Component{
 
     state = {
-        email: '',
-        senha: ''
+        username: '',
+        password: ''
     }
 
     constructor(){
         super();
-        this.service = new UsuarioService();
+        this.service = new JwtService();
     }
 
     entrar = () => {
         this.service.autenticar({
-            email: this.state.email,
-            senha: this.state.senha
+            username: this.state.username,
+            password: this.state.password
         }).then( response => {
-            this.context.iniciarSessao(response.data)
-            this.props.history.push('/home')
+            console.log(response.data);
+            console.log(jwt_decode(response.data.token));            
+            this.context.iniciarSessao(response.data.token);
+            this.props.history.push('/home');
         }).catch( erro => {
            mensagemErro(erro.response.data)
         })
@@ -47,19 +50,18 @@ class Login extends React.Component{
                                 <div className="col-lg-12">
                                     <div className="bs-component">
                                         <fieldset>
-                                            <FormGroup label="Email: *" htmlFor="exampleInputEmail1">
-                                                <input type="email" 
-                                                    value={this.state.email}
-                                                    onChange={e => this.setState({email: e.target.value})}
+                                            <FormGroup label="Username: *" htmlFor="exampleInputEmail1">
+                                                <input type="text" 
+                                                    value={this.state.username}
+                                                    onChange={e => this.setState({username: e.target.value})}
                                                     className="form-control" 
-                                                    id="exampleInputEmail1" 
-                                                    aria-describedby="emailHelp" 
-                                                    placeholder="Digite o Email" />
+                                                    id="usernameInputEmail1" 
+                                                    placeholder="Digite o Username" />
                                             </FormGroup>
                                             <FormGroup label="Senha: *" htmlFor="exampleInputPassword1">
                                                 <input type="password" 
-                                                        value={this.state.senha}
-                                                        onChange={e => this.setState({senha: e.target.value})}
+                                                        value={this.state.password}
+                                                        onChange={e => this.setState({password: e.target.value})}
                                                         className="form-control" 
                                                         id="exampleInputPassword1" 
                                                         placeholder="Password" />

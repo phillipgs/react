@@ -1,6 +1,6 @@
 import ApiService from '../apiservice'
 
-import ErroValidacao from '../exception/ErroValidacao'
+import ErrorValidation from '../exception/ErrorValidation'
 
 export default class LancamentoService extends ApiService {
 
@@ -67,7 +67,7 @@ export default class LancamentoService extends ApiService {
         }
 
         if(erros && erros.length > 0){
-            throw new ErroValidacao(erros);
+            throw new ErrorValidation(erros);
         }
     }
 
